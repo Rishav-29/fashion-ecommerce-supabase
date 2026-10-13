@@ -491,6 +491,3 @@ export const supabase = {
     }
   }
 };
-
-// Also export as `insforge` alias so all existing pages work without changing their logic
-export const insforge = supabase;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { DUMMY_PRODUCTS } from '../data'
 import { useAuth } from '../context/AuthContext'
 import { CheckCircle, UploadSimple } from '@phosphor-icons/react'
@@ -28,7 +28,7 @@ export default function Checkout() {
       const productIds = [...new Set(cartItems.map(i => i.productId))]
       let sourceProducts = DUMMY_PRODUCTS
       try {
-        const { data, error: err } = await insforge.database
+        const { data, error: err } = await supabase
           .from('products')
           .select('*')
           .in('id', productIds)
@@ -72,17 +72,17 @@ export default function Checkout() {
       if (paymentMethod === 'bank_transfer') {
         const fileExt = receiptFile.name.split('.').pop()
         const fileName = `${user.id}-${Date.now()}.${fileExt}`
-        const { error: uploadError } = await insforge.storage
+        const { error: uploadError } = await supabase.storage
           .from('payment-uploads')
           .upload(fileName, receiptFile)
           
         if (uploadError) throw uploadError
         
-        receiptUrl = `${insforge.storage.from('payment-uploads').getPublicUrl(fileName).data.publicUrl}`
+        receiptUrl = `${supabase.storage.from('payment-uploads').getPublicUrl(fileName).data.publicUrl}`
       }
 
       // 2. Create Order
-      const { data: order, error: orderError } = await insforge.database
+      const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
           user_id: user.id,
@@ -105,7 +105,7 @@ export default function Checkout() {
         price_at_purchase: item.product.price
       }))
       
-      const { error: itemsError } = await insforge.database
+      const { error: itemsError } = await supabase
         .from('order_items')
         .insert(orderItemsToInsert)
         

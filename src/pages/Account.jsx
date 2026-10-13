@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { SignOut } from '@phosphor-icons/react'
 
 export default function Account() {
@@ -13,7 +13,7 @@ export default function Account() {
   useEffect(() => {
     async function fetchProfile() {
       if (!user) return
-      const { data, error } = await insforge.database
+      const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)

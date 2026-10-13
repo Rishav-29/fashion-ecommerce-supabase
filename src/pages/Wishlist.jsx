@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useWishlist } from '../context/WishlistContext'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { DUMMY_PRODUCTS } from '../data'
 import ProductCard from '../components/ProductCard'
 
@@ -19,7 +19,7 @@ export default function Wishlist() {
       }
 
       try {
-        const { data, error } = await insforge.database
+        const { data, error } = await supabase
           .from('products')
           .select('*')
           .in('id', wishlist)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { DUMMY_PRODUCTS } from '../data'
 import { Trash, Plus, Minus } from '@phosphor-icons/react'
 
@@ -23,7 +23,7 @@ export default function Cart() {
       let sourceProducts = DUMMY_PRODUCTS
       
       try {
-        const { data, error } = await insforge.database
+        const { data, error } = await supabase
           .from('products')
           .select('*')
           .in('id', productIds)

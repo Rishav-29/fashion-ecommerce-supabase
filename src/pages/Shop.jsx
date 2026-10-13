@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useParams, Link, useLocation } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { DUMMY_PRODUCTS } from '../data'
 import { SlidersHorizontal, CaretDown, X } from '@phosphor-icons/react'
 
@@ -15,7 +15,7 @@ export default function Shop({ category }) {
       setLoading(true)
       const prefix = category === 'Men' ? 'm' : 'w'
       try {
-        const { data, error } = await insforge.database
+        const { data, error } = await supabase
           .from('products')
           .select('*')
           .like('id', `${prefix}%`)

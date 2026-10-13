@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import Testimonials from '../components/Testimonials'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { DUMMY_PRODUCTS } from '../data'
 
 const HERO_IMAGES = [
@@ -22,7 +22,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchNewProducts() {
       try {
-        const { data, error } = await insforge.database
+        const { data, error } = await supabase
           .from('products')
           .select('*')
           .eq('is_new', true)

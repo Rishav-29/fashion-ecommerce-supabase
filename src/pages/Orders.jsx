@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { insforge } from '../lib/insforge';
+import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ export default function Orders() {
   useEffect(() => {
     async function fetchOrders() {
       if (!user) return;
-      const { data, error } = await insforge.database
+      const { data, error } = await supabase
         .from('orders')
         .select(`
           *,

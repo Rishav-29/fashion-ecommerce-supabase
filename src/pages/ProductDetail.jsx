@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Heart, ArrowLeft, ShoppingBag, Check } from '@phosphor-icons/react'
 import { useWishlist } from '../context/WishlistContext'
 import { useCart } from '../context/CartContext'
-import { insforge } from '../lib/insforge'
+import { supabase } from '../lib/supabase'
 import { DUMMY_PRODUCTS } from '../data'
 
 export default function ProductDetail() {
@@ -24,7 +24,7 @@ export default function ProductDetail() {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const { data, error } = await insforge.database
+        const { data, error } = await supabase
           .from('products')
           .select('*')
           .eq('id', id)
